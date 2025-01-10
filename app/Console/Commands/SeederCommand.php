@@ -8,6 +8,7 @@ use App\Models\Organization;
 use App\Models\Phone;
 use App\Models\SubActivity;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class SeederCommand extends Command
 {
@@ -38,6 +39,8 @@ class SeederCommand extends Command
             $building->latitude = fake()->latitude;
             $building->longitude = fake()->longitude;
             $building->save();
+
+            $this->setPoint($building->id, fake()->latitude, fake()->longitude, now());
 
             $buildingIds[] = $building->id;
         }
@@ -79,5 +82,21 @@ class SeederCommand extends Command
         }
 
         return 0;
+    }
+
+    /**
+     * @param int   $id
+     * @param float $latitude
+     * @param float $longitude
+     *
+     * @return void
+     */
+    private function setPoint(int $id, float $latitude, float $longitude): void
+    {
+        $sql = "update buildings
+            set geom = ST_SetSRID(ST_MakePoint($latitude, $longitude), 4326)
+            where id = $id;";
+
+        DB::statement($sql);
     }
 }
