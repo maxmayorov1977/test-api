@@ -35,7 +35,8 @@ class SeederCommand extends Command
         foreach (range(1, 10) as $index) {
             $building = new Building();
             $building->address = fake()->streetAddress;
-            $building->coordinates = fake()->latitude . ',' . fake()->longitude;
+            $building->latitude = fake()->latitude;
+            $building->longitude = fake()->longitude;
             $building->save();
 
             $buildingIds[] = $building->id;
