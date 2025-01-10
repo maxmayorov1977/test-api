@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append(ApiAuthMiddleware::class);
+        $middleware->appendToGroup('api', ApiAuthMiddleware::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
