@@ -11,8 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property int                      $id
  * @property string                   $address
- * @property string                   $latitude
- * @property string                   $longitude
+ * @property float                    $latitude
+ * @property float                    $longitude
+ * @property string                   $geom
  * @property Collection<Organization> $organisations
  */
 class Building extends Model
