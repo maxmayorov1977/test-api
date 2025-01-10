@@ -1,0 +1,140 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "organizations",
+    "version": "1"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/organizationById/{id}": {
+      "get": {
+        "summary": "GET /organizationById/:id",
+        "responses": {
+          "200": {
+            "description": "Организация по id"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "string"
+          }
+        ]
+      }
+    },
+    "/organizationByName/{name}": {
+      "get": {
+        "summary": "GET /organizationByName/:name",
+        "responses": {
+          "200": {
+            "description": "Организация по названию"
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ]
+      }
+    },
+    "/organizationsByBuilding/{addreess}": {
+      "get": {
+        "summary": "GET /organizationsByBuilding/:address",
+        "responses": {
+          "200": {
+            "description": "Организациии по адресу строения"
+          }
+        },
+        "parameters": [
+          {
+            "name": "address",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ]
+      }
+    },
+    "/organizationsByActivity/{activity}": {
+      "get": {
+        "summary": "GET /organizationsByActivity/:activity",
+        "responses": {
+          "200": {
+            "description": "Организации по типу деятельности"
+          }
+        },
+        "parameters": [
+          {
+            "name": "activity",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ]
+      }
+    },
+    "/organizationsByAllActivities/{activity}": {
+      "get": {
+        "summary": "GET /organizationsByAllActivities/:activity",
+        "responses": {
+          "200": {
+            "description": "Организации по типу или подтипу деятельности"
+          }
+        },
+        "parameters": [
+          {
+            "name": "activity",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ]
+      }
+    },
+    "/organizationsByCoordinates/{latitude}/{longitude}": {
+      "get": {
+        "summary": "GET /organizationsByAllActivities/:latitude/:longitude",
+        "responses": {
+          "200": {
+            "description": "Организации по координатам"
+          }
+        },
+        "parameters": [
+          {
+            "name": "latitude",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "longitude",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ]
+      }
+    }
+  }
+}
