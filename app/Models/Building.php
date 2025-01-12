@@ -11,16 +11,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property int                      $id
  * @property string                   $address
- * @property float                    $latitude
- * @property float                    $longitude
- * @property string                   $geom
+ * @property string                   $location
  * @property Collection<Organization> $organisations
  */
 class Building extends Model
 {
     protected $fillable = [
         'address',
-        'coordinates',
+        'location',
     ];
 
     /**

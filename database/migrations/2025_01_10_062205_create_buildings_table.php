@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
@@ -10,18 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $sql = 'CREATE TABLE buildings (
-                    id SERIAL PRIMARY KEY,
-                    address VARCHAR(255) NOT NULL,
-                    latitude FLOAT NOT NULL,
-                    longitude FLOAT NOT NULL,
-                    geom GEOGRAPHY(POINT),
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );';
-
-        DB::statement($sql);
-        DB::statement('CREATE INDEX idx_locations_geom ON buildings USING GIST(geom);');
+        Schema::create('buildings', function (Blueprint $table) {
+            $table->id();
+            $table->string('address')->nullable(false)->unique()->comment('Адрес');
+            $table->geography('location', 'point')->nullable()->spatialIndex()->comment('Координаты');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -30,7 +24,5 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('buildings');
-
-        DB::raw('DROP INDEX if exists idx_locations_geom;');
     }
 };

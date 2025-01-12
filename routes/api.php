@@ -10,5 +10,6 @@ Route::group(['prefix' => 'v1'], static function () {
     Route::get('/organizationsByBuilding', [OrganizationController::class, 'organizationsByBuilding']);
     Route::get('/organizationsByActivity', [OrganizationController::class, 'organizationsByActivity']);
     Route::get('/organizationsByAllActivities', [OrganizationController::class, 'organizationsByAllActivities']);
-    Route::get('/organizationsByCoordinates', [OrganizationController::class, 'organizationsByCoordinates']);
+    Route::get('/organizationsByRadius', [OrganizationController::class, 'organizationsByRadius']);
+    Route::get('/organizationsBySquare', [OrganizationController::class, 'organizationsBySquare']);
 });

@@ -36,11 +36,13 @@ class SeederCommand extends Command
         foreach (range(1, 10) as $index) {
             $building = new Building();
             $building->address = fake()->streetAddress;
-            $building->latitude = fake()->latitude;
-            $building->longitude = fake()->longitude;
             $building->save();
 
-            $this->setPoint($building->id, fake()->latitude, fake()->longitude, now());
+            $this->setPoint(
+                $building->id,
+                rand(29000, 31000) / 1000,
+                rand(59000, 61000) / 1000,
+            );
 
             $buildingIds[] = $building->id;
         }
@@ -86,15 +88,15 @@ class SeederCommand extends Command
 
     /**
      * @param int   $id
-     * @param float $latitude
      * @param float $longitude
+     * @param float $latitude
      *
      * @return void
      */
-    private function setPoint(int $id, float $latitude, float $longitude): void
+    private function setPoint(int $id, float $longitude, float $latitude): void
     {
         $sql = "update buildings
-            set geom = ST_SetSRID(ST_MakePoint($latitude, $longitude), 4326)
+            set location = ST_SetSRID(ST_MakePoint($longitude, $latitude), 4326)
             where id = $id;";
 
         DB::statement($sql);

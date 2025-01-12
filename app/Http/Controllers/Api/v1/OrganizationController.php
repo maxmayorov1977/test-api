@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Response;
 
 class OrganizationController extends Controller
 {
+    public const SRID = 4326;
+
     /**
      * @return JsonResponse
      */
@@ -145,17 +147,55 @@ class OrganizationController extends Controller
     /**
      * @return JsonResponse
      */
-    public function organizationsByCoordinates(): JsonResponse
+    public function organizationsByRadius(): JsonResponse
     {
-        $latitude = Request::get('latitude');
         $longitude = Request::get('longitude');
+        $latitude = Request::get('latitude');
+        $tolerance = Request::get('tolerance');
 
         $organizations = Building::query()
             ->with('organizations')
             ->whereHas('organizations')
-            ->whereBetween('latitude', [$latitude - 100, $latitude + 100])
-            ->whereBetween('longitude', [$longitude - 100, $longitude + 100])
-            ->simplePaginate();
+            ->whereRaw(sprintf(
+                'ST_DWithin(location, ST_SetSRID(ST_MakePoint(%s, %s), %s), %s)',
+                $longitude,
+                $latitude,
+                self::SRID,
+                $tolerance,
+            ))
+            ->get();
+
+        if ($organizations->isEmpty()) {
+            return Response::json(status: SymfonyResponse::HTTP_NOT_FOUND);
+        }
+
+        return Response::json([
+            'organizations' => $organizations,
+        ]);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function organizationsBySquare(): JsonResponse
+    {
+        $minLongitude = Request::get('minLongitude');
+        $minLatitude = Request::get('minLatitude');
+        $maxLongitude = Request::get('maxLongitude');
+        $maxLatitude = Request::get('maxLatitude');
+
+        $organizations = Building::query()
+            ->with('organizations')
+            ->whereHas('organizations')
+            ->whereRaw(sprintf(
+                'location && ST_MakeEnvelope(%s, %s, %s, %s, %s);',
+                $minLongitude,
+                $minLatitude,
+                $maxLongitude,
+                $maxLatitude,
+                self::SRID,
+            ))
+            ->get();
 
         if ($organizations->isEmpty()) {
             return Response::json(status: SymfonyResponse::HTTP_NOT_FOUND);
