@@ -110,15 +110,22 @@
         ]
       }
     },
-    "/organizationsByCoordinates/{latitude}/{longitude}": {
+    "/organizationsByRadius/{longitude}/{latitude}": {
       "get": {
-        "summary": "GET /organizationsByAllActivities/:latitude/:longitude",
+        "summary": "GET /organizationsByRadius/:longitude/:latitude",
         "responses": {
           "200": {
-            "description": "Организации по координатам"
+            "description": "Организации в радиусе"
           }
         },
         "parameters": [
+          {
+            "name": "longitude",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          },
           {
             "name": "latitude",
             "in": "path",
@@ -127,7 +134,47 @@
             "format": "string"
           },
           {
-            "name": "longitude",
+            "name": "tolerance",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          }
+        ]
+      }
+    },
+    "/organizationsBySquare/{minLongitude}/{minLatitude}/{maxLongitude}/{maxLatitude}": {
+      "get": {
+        "summary": "GET /organizationsBySquare/:minLongitude/:minLatitude/:maxLongitude/:maxLatitude",
+        "responses": {
+          "200": {
+            "description": "Организации в квадрате"
+          }
+        },
+        "parameters": [
+          {
+            "name": "minLongitude",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "minLatitude",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "maxLongitude",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "string"
+          },
+          {
+            "name": "maxLatitude",
             "in": "path",
             "required": true,
             "type": "string",
